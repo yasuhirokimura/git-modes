@@ -26,6 +26,7 @@ help:
 	$(info make lisp         - generate byte-code and autoloads)
 	$(info make redo         - re-generate byte-code and autoloads)
 	$(info make clean        - remove generated files)
+	$(info make install      - install byte-code and autoloads)
 	@printf "\n"
 
 redo: clean lisp
@@ -63,3 +64,7 @@ $(PKG)-autoloads.el: $(ELS)
     (let ((generated-autoload-file file))\
       (update-directory-autoloads default-directory))))" \
 	2>&1 | sed "/^Package autoload is deprecated$$/d"
+
+install: lisp
+	install -d $(PREFIX)/share/emacs/site-lisp/git-modes
+	install -m 644 -p *.el *.elc $(PREFIX)/share/emacs/site-lisp/git-modes
